@@ -1,0 +1,158 @@
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out
+                                                          % if you need a4paper
+%\documentclass[letterpaper, 12 pt, conference,onecolumn]{ieeeconf}  % Comment this line out
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4
+                                                          % paper
+
+\IEEEoverridecommandlockouts                              % This command is only
+                                                          % needed if you want to
+                                                          % use the \thanks command
+\overrideIEEEmargins
+
+\usepackage{epsfig} % for postscript graphics files
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{color}
+\usepackage{balance}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{mathtools}
+\usepackage{pdfrender}
+\usepackage{trfsigns}
+\DeclareRobustCommand*{\pmbb}[1]{%
+	\textpdfrender{
+		TextRenderingMode=Stroke,
+		LineWidth=.25pt,
+	}{#1}%
+}
+\usepackage{centernot}
+\usepackage{color}
+\usepackage[acronym]{glossaries}
+\usepackage[ruled]{algorithm2e}
+\usepackage{graphicx,subcaption}
+\usepackage{tabu}
+\usepackage{cite}
+\usepackage[official]{eurosym}
+
+\graphicspath{{figures/}}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\A}{\mc{A}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bu}{\mathbf{u}}
+
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\expected}{\mathbb{E}}
+
+\newcommand{\eqdef}{\coloneqq}
+\newcommand{\reqdef}{\eqqcolon}
+
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\bsone}{\boldsymbol{1}}
+
+\newcommand{\supscr}[2]{{#1}^{\textup{#2}}}
+\newcommand{\subscr}[2]{{#1}_{\textup{#2}}}
+\newcommand{\until}[1]{\{1,\dots,#1\}}
+\newcommand{\alert}[1]{{\color{red}#1}}
+\newcommand{\note}[1]{{\color{blue}#1}}
+\newcommand{\bld}[1]{\boldsymbol{#1}}
+\newcommand{\col}{\mathrm{col}}
+\newcommand{\diag}{\mathrm{diag}}
+
+\newcommand{\set}[2]{\left\{ #1 :  #2  \right\}}
+\newcommand{\interval}[2]{\mathbb{I}_{[#1,#2]}}
+
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\green}{\textcolor{green}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{problem}{Problem}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{standing}{Standing Assumption}
+\newtheorem{design}{Design choice}
+
+\DeclareMathSizes{10}{10}{6}{4}
+
+%Comment Box
+%-----------------------
+\usepackage{xcolor,calc}
+
+\newcommand{\colorNoteBox}[3]{
+	\begin{center}
+		\vspace{-2ex}\small
+		\fcolorbox[rgb]{#1}{#2}{\parbox[t]{\columnwidth-\parindent- 0.2cm}{\setlength{\parskip}{1.5ex}#3}}
+	\end{center}
+}
+\newcommand{\FFnote}[1]{\colorNoteBox{0,1,0}{0.9,0.9,0.9}{FF: #1}}
+%-------------------------
+
+
+\makeglossaries
+\newacronym{w.r.t.}{w.r.t.}{with respect to}
+\newacronym{LTI}{LTI}{linear time-invariant}
+\newacronym{MPC}{MPC}{model predictive control}
+\newacronym{LMI}{LMI}{linear matrix inequality}
+\newacronym{PLF}{PLF}{polyhedral Lyapunov function}
+
+\title{\LARGE \bf
+[Title goes here]
+}
+
+\author{Emmanouil Dimou, Filippo Fabiani, and Alberto Bemporad% <-this % stops a space
+\thanks{This work was partially supported by the European Research Council (ERC), Advanced Research Grant COMPACT (Grant Agreement No. 101141351).
+The authors are with the IMT School for Advanced Studies Lucca, Piazza San Francesco 19, 55100, Lucca, Italy (email: {\tt \footnotesize \{emmanouil.dimou, filippo.fabiani, alberto.bemporad\}@imtlucca.it}).}%
+}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+[Abstract goes here]
+\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+[Introduction goes here]
+
+\subsubsection*{Notation}
+[Notation adopted throughout the manuscript goes here]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Section II}
+[Section II goes here]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+[Conclusion go here]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\balance
+\bibliographystyle{IEEEtran}
+\bibliography{26_CDC_RHG}
+
+\end{document}
