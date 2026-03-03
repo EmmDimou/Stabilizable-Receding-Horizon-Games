@@ -1,0 +1,307 @@
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out
+                                                          % if you need a4paper
+%\documentclass[letterpaper, 12 pt, conference,onecolumn]{ieeeconf}  % Comment this line out
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4
+                                                          % paper
+
+\IEEEoverridecommandlockouts                              % This command is only
+                                                          % needed if you want to
+                                                          % use the \thanks command
+\overrideIEEEmargins
+
+\usepackage{epsfig} % for postscript graphics files
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{color}
+\usepackage{balance}
+\usepackage{comment}
+\usepackage{booktabs,tabularx}
+\usepackage{multirow}
+\usepackage{mathtools}
+\usepackage{pdfrender}
+\usepackage{trfsigns}
+\DeclareRobustCommand*{\pmbb}[1]{%
+	\textpdfrender{
+		TextRenderingMode=Stroke,
+		LineWidth=.25pt,
+	}{#1}%
+}
+\usepackage{centernot}
+\usepackage{color}
+\usepackage[ruled]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{tabu}
+\usepackage{cite}
+\usepackage[official]{eurosym}
+
+\graphicspath{{figures/}}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\A}{\mc{A}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bu}{\mathbf{u}}
+
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\expected}{\mathbb{E}}
+
+\newcommand{\eqdef}{\coloneqq}
+\newcommand{\reqdef}{\eqqcolon}
+
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\bsone}{\boldsymbol{1}}
+
+\newcommand{\supscr}[2]{{#1}^{\textup{#2}}}
+\newcommand{\subscr}[2]{{#1}_{\textup{#2}}}
+\newcommand{\until}[1]{\{1,\dots,#1\}}
+\newcommand{\alert}[1]{{\color{red}#1}}
+\newcommand{\note}[1]{{\color{blue}#1}}
+\newcommand{\bld}[1]{\boldsymbol{#1}}
+\newcommand{\col}{\mathrm{col}}
+\newcommand{\diag}{\mathrm{diag}}
+
+\newcommand{\set}[2]{\left\{ #1 :  #2  \right\}}
+\newcommand{\interval}[2]{\mathbb{I}_{[#1,#2]}}
+
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\green}{\textcolor{green}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{problem}{Problem}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{standing}{Standing Assumption}
+\newtheorem{design}{Design choice}
+
+\DeclareMathSizes{10}{10}{6}{5}
+
+%Comment Box
+%-----------------------
+\usepackage{xcolor,calc}
+
+\newcommand{\colorNoteBox}[3]{
+	\begin{center}
+		\vspace{-2ex}\small
+		\fcolorbox[rgb]{#1}{#2}{\parbox[t]{\columnwidth-\parindent- 0.2cm}{\setlength{\parskip}{1.5ex}#3}}
+	\end{center}
+}
+\newcommand{\FFnote}[1]{\colorNoteBox{0,1,0}{0.9,0.9,0.9}{FF: #1}}
+%-------------------------
+
+
+
+\title{\LARGE \bf
+Receding Horizon Games with Stability Guarantees
+}
+
+\author{Emmanouil Dimou, Filippo Fabiani, and Alberto Bemporad% <-this % stops a space
+\thanks{This work was partially supported by the European Research Council (ERC), Advanced Research Grant COMPACT (Grant Agreement No. 101141351).
+The authors are with the IMT School for Advanced Studies Lucca, Piazza San Francesco 19, 55100, Lucca, Italy (email: {\tt \footnotesize \{emmanouil.dimou, filippo.fabiani, alberto.bemporad\}@imtlucca.it}).}%
+}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+\subsubsection*{Notation}
+We denote by $\Z_{T} = \{0,...,T-1\}$ the set of the first $T$ non-negative integers and similarly $\Z^{+}_{T} = \{1,...,T\}$, by $\mc{I} = \{1,...,I\}$ the set of the agents' indices, ...\\
+The set of symmetric, positive definite (semi-definite), real matrices of dimensions $n \times n$ is denoted as $\bbS^{n}_{> (\geq) 0}$, the row i of a real matrix $A \in \R^{n \times n}$ as $A^{\top}_{i}$,the row i of a real vector $b \in \mathbb{R}^{n}$ as $b_{i}$,...\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%The discrete time LTI dynamics, polytopic state and input constraints,  stabilizability assumption
+Consider the following discrete-time linear, time-invariant system:
+\begin{equation}\label{DT-LTI}
+x_{k+1} = A x_{k} + \sum_{i \in \mathcal{I}}B_{i}u_{i,k},
+\end{equation}
+where $x_{k} \in \R^{n_x}$ is the global state and $u_{i,k} \in \R^{n_{u,i}}$ is the input of agent $i$ at time step $k$, while $A \in \R^{n_x \times n_x}$ is the global transition matrix and $B_{i} \in \R^{n_x \times n_{u,i}}$ the input matrix of agent $i$. The global state and the input of each agent is  subject to shared and local constraints respectively:
+\begin{subequations}\label{State,Input constraints}
+\begin{align}
+&x_{k} \in \mc{X},\\
+&u_{i,k} \in \mc{U}_{i},
+\end{align}
+\end{subequations}
+where $\mc{X} = \{x \in \R^{n_{x}}:\; A_{x}x \leq b_{x}\},\; A_{x} \in \R^{n_{c,x} \times n_{x}},\; b_{x} \in \R^{n_{c,x}}$ and $\mc{U}_{i} =\{ u \in \R^{n_{u,i}}:\; A_{u,i}u \leq b_{u,i}\},\; A_{u,i} \in \R^{n_{c,u} \times n_{u}},\; b_{x} \in \R^{n_{c,u}}$ are for the shake of simplicity polytopes containing the origin in their interior. For notational ease, let $\mc{U} \subset \R^{n_u}$ be the corresponding polytopic constraint for the aggregate input vector $u_{k} = \begin{bmatrix} u^{\top}_{1,k}, \cdots u^{\top}_{I,k}\end{bmatrix}^{\top}$, i.e.
+\begin{equation}\label{Aggregate Input constraints}
+\mc{U} = \prod_{i \in \mc{I}} \mc{U}_{i}.
+\end{equation}
+%Stabilizability assumption
+\begin{assumption}\label{Stabilizability Assumption}
+The pair $(A,B)$, where $B = \bigl[B_{1}\ \cdots\ B_{I} \bigr]$, is stabilizable.
+\end{assumption}
+%Maximal λ-contractive Positive Invariant set
+One may uniquely~\cite{Kerrigan2000InvariantSetsinMPC} associate with the pair $(A,B)$ and the constraints~\eqref{State,Input constraints} the maximal $\lambda$-contractive control positive invariant set ($\lambda$-MCPI), denoted as $\mc{X}^{\lambda}_{\infty} \subseteq \mc{X}$ and satisfying:
+\begin{equation}\label{λ-MCPI}
+\mc{X}^{\lambda}_{\infty} = \{x \in \mc{X} \mid \exists u \in \mc{U} : Ax + Bu \in \lambda \mc{X}^{\lambda}_{\infty}\},
+\end{equation}
+where $\lambda \in [0, 1)$ is the decay rate. The term 'maximal' in such sense implies that all the $\lambda-$CPI sets included in $\mc{X}$ are included in $\mc{X}^{\lambda}_{\infty}$ as well. Note here that the union of $\lambda-$CPI sets is itself a $\lambda-$CPI set.
+
+%The receding horizon game
+Additionally, let us introduce the following receding horizon game. At every time step $k$, every agent aims at minimizing its own finite horizon cost:
+\begin{equation}\label{Finite Horizon Cost}
+V_{i,T}(x) = \sum_{\tau \in \Z_{T}}l_{i}(x_{\tau/k}, u_{i,\tau/k}),
+\end{equation}
+where $l_{i}(x, u) = \|x\|^{2}_{{Q}_{i}} + \|u\|^{2}_{R_{i}},\; Q_{i} \in \bbS^{n_x}_{\geq 0},\; R_{i} \in \bbS^{n_{u,i}}_{> 0}$ and $T > 1$. The arising interdependent optimal control problems (OCPs), may now be written for every agent $i \in \mc{I}$:
+\begin{subequations}\label{Interdependent Optimal Control Problems, preliminary version}
+\begin{align}
+& \min_{\{u_{i,0/k},...,u_{i,T-1/k}\}} \quad \sum_{\tau \in \Z_{T}}l_{i}(x_{\tau/k}, u_{i,\tau/k}),\\
+\text{s.t.} \quad & x_{\tau+1/k} = A x_{\tau/k} + \sum_{i \in \mc{I}}B_{i}u_{i,\tau/k},\; \tau \in \Z_{T},\\
+& x_{\tau/k} \in \mc{X},\; \tau \in \Z^{+}_{T},\\
+& u_{i,\tau/k} \in \mc{U}_{i},\; \tau \in \Z_{T},\\
+& u_{0/k} \in \mc{P}, \label{Shared constraint, initial time step}\\
+& x_{0/k} = x_{k},
+\end{align}
+\end{subequations}
+where $\mc{P} \subset \R^{n_u}$ stands for a set to be designed in the subsequent sections. The agents compute the optimal input sequences $\{u^{*}_{i,\tau/k}\}_{\tau \in \Z_{T}}$, given the assumed as measurable state $x_{k}$ and they apply the first element $u^{*}_{i,0/k}$ to the system dynamics described in~\eqref{DT-LTI}. This implicit feedback policy may be denoted as:
+\begin{equation}\label{Implicit Feedback Policy}
+u^{*}_{k} = \pi(x_{k})
+\end{equation}
+and the resulting closed-loop system is:
+\begin{equation}\label{Closed-loop system}
+x_{k+1} = A x_{k} + B\pi(x_{k}).
+\end{equation}
+The purpose of this work is to design the constraints~\eqref{Shared constraint, initial time step} in a way such that the existence of at least one optimal solution $\{u^{*}_{i,\tau/k}\}_{\tau \in \Z_{T}}$ is guaranteed at every time step and the origin, as an equilibrium of the closed-loop system \eqref{Closed-loop system} is rendered exponentially stable.
+%\end{comment}
+
+\section{Polyhedral Control Lyapunov Functions and Their Domain of Attraction}
+
+%Computation of contractive MCPI.
+The proposed way to design the set $\mc{P}$ relies on the contractive property of $\mc{X}^{\lambda}_{\infty}$. It is assumed as in~\cite{Grammatico2012PCLF}, that the latter for a properly selected value of the decay rate $\lambda$ is a polyhedron (and in our specific case a polytope) determined by a finite number of half-spaces $n_F$, containing the origin in its interior, i.e.:
+\begin{equation}\label{Polyhedral λ-MCPI}
+\mc{X}^{\lambda}_{\infty} = \{x \in \R^{n_x} \mid Fx \leq 1_{n_F}\},
+\end{equation}
+% Option: Direct and Analytical
+where $F \in \R^{n_F \times n_x}$ and $\max(Fx) > 0$ for all $x \in \R^{n_x} \setminus \{0\}$. 
+To compute $\mc{X}^{\lambda}_{\infty}$, one may employ a (backward or forward) viability iterative procedure; the interested reader is referred to~\cite{Blanchini1994UltimateBounded},~\cite{Blanchini2008SetTheoreticMethods},~\cite{Miani2005MAXISG} for further details. 
+In general, this procedure is not guaranteed to terminate in finite number of iterations~\cite{Kerrigan2000InvariantSetsinMPC}. Nevertheless, the existence of a polyhedral representation as defined in equation~\eqref{Polyhedral λ-MCPI}, is a necessary and sufficient condition for such termination.
+
+%The associated PCLF of second order and its relevant properties.
+The set $\mc{X}^{\lambda}_{\infty}$ serves as the domain of attraction (DoA) of the associated second order polyhedral control Lyapunov function (PCLF):
+\begin{equation}\label{The PCLF}
+V_{\lambda}(x) = \left(\max_{i \in \Z^{+}_{n_{F}}} F^{\top}_{i}x\right)^{2},\; x \in \R^{n_x}.
+\end{equation}
+Even if non-smooth, $V_{\lambda}$ has been exploited for the stabilization of systems with linear dynamics and affine state and input constraints in various ways. For instance, a weighted version of it in the framework of state feedback stabilization of the origin using model predictive control (MPC) may serve as terminal cost. Within the same context, $\mc{X}^{\lambda}_{\infty}$ stands for the DoA of the controller as well as the terminal set i.e. the set where the state at the end of the horizon should lie. In this work, on the contrary we rely on the following two properties of $V_{\lambda}$:
+\begin{lemma}\label{PCLF homogeneity and monotonic decrease on DoA}
+Let the $\lambda-$MCPI set $\mc{X}^{\lambda}_{\infty}$ be described by the set of inequalities~\eqref{Polyhedral λ-MCPI} and the associated PCLF $V_{\lambda}$ be given by equation~\eqref{The PCLF}. Then:
+\begin{enumerate}
+\renewcommand{\labelenumi}{\roman{enumi})}
+\item $\forall x \in \mc{X}^{\lambda}_{\infty},\; \exists u \in \mc{U}:\; 0 \leq V_{\lambda}(Ax+Bu) \leq \lambda^{2}V_{\lambda}(x)$,
+\item $\exists c_{1},\; c_{2} > 0:\; c_{1}\|x\|^{2} \leq V_{\lambda}(x) \leq c_{2}\|x\|^{2}$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+See~\cite{Grammatico2012PCLF}, Proposition~3 and Lemma~4 respectively.
+\end{proof}
+%My view of the proof, may be deleted in the deliverable.
+In principle, the first part of the lemma may be viewed as an immediate consequence of the contractive property of $\mc{X}^{\lambda}_{\infty}$ and the homogeneity property of the corresponding Minkowski function $M(x) = \max_{i \in \mathbb{Z}^{+}_{n_{F}}} F^{\top}_{i}x,\; x \in \R^{n_x}$. Additionally, the second part follows from the upper and lower bounds of $M$ including the state norm $\|x\|$, which in their turn may be derived using the infinity norm of $F$ and the generic definition of the Minkowski function $M(x) = \inf\{p \geq 0:\; x \in p\mc{X}^{\lambda}_{\infty}\},\; x \in \R^{n_x}$.
+%Note: The same argument holds for every λ-CPI set containing the origin in its interior, not only the maximal one.
+\begin{remark}
+
+\end{remark}
+
+\section{The Proposed Receding Horizon Game}
+%Design the polyhedron P
+We propose to re-write the interdependent OCPs~\eqref{Interdependent Optimal Control Problems, preliminary version},for every agent $i \in \mc{I}$ and every time step $k$ as follows:
+\begin{subequations}\label{Interdependent Optimal Control Problems, designed}
+\begin{align}
+& \min_{\{u_{i,0/k},...,u_{i,T-1/k}\}}  \quad \sum_{\tau \in \Z_{T}}l_{i}(x_{\tau/k}, u_{i,\tau/k})\\
+\text{s.t.} \quad & x_{\tau+1/k} = A x_{\tau/k} + \sum_{i \in \mc{I}}B_{i}u_{i,\tau/k},\; \tau \in \Z_{T}, \label{DT-LTI, IOCP, designed}\\
+& A_{x} x_{\tau/k} \leq b_{x},\; \tau \in \Z^{+}_{T},\\
+& A_{u,i} u_{i,\tau/k} \leq b_{u,i},\; \tau \in \Z_{T},\\
+& F B u_{0/k} \leq 1_{n_{F}} \lambda \max_{j \in \Z^{+}_{n_{F}}} F^{\top}_{j}x_{k} - F A x_{k}, \label{Shared constraint, initial prediction step, designed}\\
+& x_{0/k} = x_{k}.
+\end{align}
+\end{subequations}
+Note that the constraint~\eqref{Shared constraint, initial prediction step, designed} is equivalent to the condition $i)$ of Lemma~\ref{PCLF homogeneity and monotonic decrease on DoA}, for every initial condition $x_{k} \in \X^{\lambda}_{\infty}$, due to the fact that $\max(Fx) > 0$ for all $x \in \R^{n_x} \setminus \{0\}$.
+
+%Bring the OCPs in a proper GNEP form
+It is convenient to introduce the input vector $\bu_{k} = \begin{bmatrix} u^{\top}_{1,0/k},...,u^{\top}_{1,T-1/k},...,u^{\top}_{I,0/k},...,u^{\top}_{I,T-1/k}\end{bmatrix}^{\top} \in \R^{Tn_{u}}$ and bring the OCPs~\eqref{Interdependent Optimal Control Problems, designed} in the following form:
+\begin{subequations}\label{Generalized Nash Equilibrium Problem}
+\begin{align}
+& \min_{\mathbf{u}_{k}} \quad \bu^{\top}_{k} H_{i} \bu_{k} + 2x^{\top}_{k} c_{i} \_{k},\\
+\text{s.t.} \quad & A_{i,\bu} \bu_{k} \leq b_{i,\bu},\label{Shared Constraint, all prediction time steps, designed, GNEP}\\
+& F_{\bu}\bu_{k} \leq 1_{n_{F}} \lambda \max_{j \in \Z^{+}_{n_{F}}} F^{\top}_{j}x_{k} - F A x_{k}, \label{Shared constraint, initial prediction step, designed, GNEP}
+\end{align}
+\end{subequations}
+where $H_{i} \in \bbS^{Tn_{u}}_{>0}$ and $c_{i}, A_{i,\bu}, b_{i,\bu}, F_{\bu}$ real matrices or vectors obtained by writing the dynamics~\eqref{DT-LTI, IOCP, designed} in vectorized form. The latter step may involve the usage of an auxiliary input vector $\bu_{k,a} = \begin{bmatrix} u^{\top}_{0},...,u^{\top}_{T-1}\end{bmatrix}^{\top} \in \R^{Tn_{u}}$ and a permutation matrix $T \in \R^{Tn_{u} \times Tn_{u}}$, which is by definition full rank, such that $\bu_{k,a} = T \bu_{k}$. The positive definiteness property of the matrix $H_{i}$ then arises from the fact that $Q_{i} \in \bbS^{n_x}_{\geq 0},\; R_{i} \in \bbS^{n_{u,i}}_{> 0}$ and that $T$ is full rank. 
+
+%Identify the GNEP.
+Now, one may identify the OCPs~\eqref{Generalized Nash Equilibrium Problem} as a generalized Nash equilibrium problem (GNEP). In our case, the objective function of each agent $i$ is convex in its own strategy $\{u_{i,\tau/k}\}_{\tau \in \Z_{T}}$, since every principal sub-matrix of $H_{i}$ should be positive definite. Furthermore, assuming that $x_{k} \in \mc{X}^{\lambda}_{\infty}$, the feasible set of each player is non-empty, closed and convex. One may additionally "stack" the constraints~\eqref{Shared Constraint, all prediction time steps, designed, GNEP},~\eqref{Shared constraint, initial prediction step, designed, GNEP} for every agent $i$ and define another, non-empty closed and convex set, which renders the GNEP~\eqref{Generalized Nash Equilibrium Problem} jointly convex (see~\cite{Facchinei2010gnep} for a formal definition of jointly convex GNEPs).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Describe the fulfillment of the requirements of the Theorem about the existence of GNE.
+To conclude, given the polytopic in essence nature of the constraints~\eqref{Shared Constraint, all prediction time steps, designed, GNEP},~\eqref{Shared constraint, initial prediction step, designed, GNEP}, one may make additional arguments and prove that the requirements of Theorem 6 in~\cite{Facchinei2010gnep} are met, and the existence of at least one GNE is guaranteed for every $x_{k} \in \mc{X}^{\lambda}_{\infty}$.
+
+%The main result of the work, as proposition
+\begin{proposition}
+For every initial state $x_{0} \in \mc{X}^{\lambda}_{\infty}$, the receding horizon GNEP~\eqref{Generalized Nash Equilibrium Problem} becomes feasible $\forall k \in \Z_{\infty}$ and the resulting sequence of optimal feedback $\{u^{*}_{k}\}_{k \in \Z_{\infty}}$ given in equation~\eqref{Implicit Feedback Policy} renders the origin, as an equilibrium of the closed-loop dynamics described in equation~\eqref{Closed-loop system} exponentially stable.
+\end{proposition}
+\begin{proof}
+%The argument for the recursive feasibility
+For every initial state $x_{0} \in \mc{X}^{\lambda}_{\infty}$, the GNEP~\eqref{Generalized Nash Equilibrium Problem} meets the requirements of Theorem 6 in~\cite{Facchinei2010gnep}, thus it is feasible at the initial time step. Now, if the GNEP~\eqref{Generalized Nash Equilibrium Problem} is feasible at time step $k$, then due to the constraints~\eqref{Shared constraint, initial prediction step, designed, GNEP} and the feedback policy $\pi$ given in equation~\eqref{Implicit Feedback Policy}:
+\begin{equation}\label{Contractive step at time step k, proof}
+\max_{j \in \Z^{+}_{n_{F}}} F^{\top}_{j}x_{k+1} \leq 1_{n_{F}} \lambda \max_{j \in \Z^{+}_{n_{F}}} F^{\top}_{j}x_{k} < 1.
+\end{equation}
+Equation~\eqref{Contractive step at time step k, proof} implies that $x_{k+1} \in \mc{X}^{\lambda}_{\infty}$. Thus, at time step $k+1$ the GNEP~\eqref{Generalized Nash Equilibrium Problem} meets again the requirements of Theorem 6 and recursive feasibility holds. By induction, feasibility holds $\forall k \in \Z_{\infty}$.
+
+%The argument for exponential stability
+For the exponential stability of the origin, first we prove by induction that:
+\begin{equation}\label{Sequential contractive steps, proof}
+V_{\lambda}(x_{k}) \leq \lambda^{2k} V_{\lambda}(x_{0}),\; k \in \Z^{+}_{\infty}.
+\end{equation}
+Indeed, equation~\eqref{Sequential contractive steps, proof} holds for $k=1$ since the constraints~\eqref{Shared constraint, initial prediction step, designed, GNEP} are equivalent to the condition $i)$ of Lemma~\ref{PCLF homogeneity and monotonic decrease on DoA}. Now, given that equation~\eqref{Sequential contractive steps, proof} holds for some $k$, then again due to the aforementioned equivalence (and the recursive feasibility argument):
+\begin{equation}
+V_{\lambda}(x_{k+1}) \leq \lambda^{2}V_{\lambda}(x_{k}) \leq \lambda^{2(k+1)}V_{\lambda}(x_{0}),
+\end{equation}
+which concludes the inductive step. To conclude, the fact that $0 \leq V_{\lambda}(x_{k})$ in combination with condition $ii)$ of  Lemma~\ref{PCLF homogeneity and monotonic decrease on DoA} yields:
+\begin{equation}\label{Exponential Stability}
+\|x_{k}\| \leq \lambda^{k} \sqrt{\frac{c_{2}}{c_{1}}}\|x_{0}\|,
+\end{equation}
+which coincides with the definition of exponential stability.
+\end{proof}
+%Note: The case of multiple GNEs.
+\begin{remark}
+
+\end{remark}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Numerical Implementation}
+Consider a simple mechanical system 
+
+\section{Conclusion}
+
+\section*{APPENDIX}
+
+\section*{ACKNOWLEDGMENT}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{IEEEtran}
+\bibliography{26_CDC_RHG_2}
+
+\end{document}
